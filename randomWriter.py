@@ -1,45 +1,24 @@
 #!/usr/bin/python
+from WordWeb import *
 import random
 
+#leave False unless debugging
 debug = False
 
-class WordNode:
-    def __init__(self,word):
-        self.word = word
-        self.followers = []
-        self.starter = False
-        self.ender = False
-        if word != None:
-            if word[-1] in ['!','?','.']:
-                self.ender = True 
-            if word.istitle():
-                self.starter = True 
-        else:
-            self.ender = False
-            
-    def add(self, f):
-        self.followers.append(f)
-
-class WordWeb:
-    def __init__(self):
-        self.nodes = {None: WordNode(None)}
-        
-    def add(self, front, follow):
-        if follow not in self.nodes.keys():
-            self.nodes[follow] = WordNode(follow)
-            self.nodes[front].add(self.nodes[follow])     
-        else:
-            self.nodes[front].add(self.nodes[follow])
-        
+#text input is needed to seed/feed/lead the web
 with open(input("Type file name: "),'r') as file:
+    #remove line endings and split on spaces
     data = file.read().replace('\n',' ').split(' ')
 
+#create and fill in the WordWeb
 ww = WordWeb()
 last = None
-
 for d in data:
+    #ignore whitespace
     if d.replace(' ','') != '':
         ww.add(last,d)
+        #Note that more logic could be added to create a more complex web
+        #This web will have only one follower on the base node
         last = d
 
 if debug == True:
@@ -50,6 +29,9 @@ if debug == True:
             print('\t'+f.word)
 
 def traverse(node):
+    """
+    Randomly traverse the WordWeb
+    """
     if node.ender == True or len(node.followers) <= 0:
         print(node.word)
         return
