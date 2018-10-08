@@ -9,7 +9,7 @@ class WordNode:
         Initialize with a string
         """
         self.word = word
-        self.followers = []
+        self.followers = {}
         #can be used to begin a sentence
         self.starter = False
         #can be used to end a sentence
@@ -28,7 +28,9 @@ class WordNode:
         """
         Add a follower
         """
-        self.followers.append(f)
+        if f not in self.followers.keys():
+            self.followers[f] = 0
+        self.followers[f] += 1
 
 class WordWeb:
     """

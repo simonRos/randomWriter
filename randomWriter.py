@@ -3,7 +3,7 @@ from WordWeb import *
 import random
 
 #leave False unless debugging
-debug = False
+debug = True
 
 #text input is needed to seed/feed/lead the web
 with open(input("Type file name: "),'r') as file:
@@ -22,11 +22,13 @@ for d in data:
         last = d
 
 if debug == True:
-    for k,v in ww.nodes.items():
-        print(k)
-        print(len(v.followers))
-        for f in v.followers:
-            print('\t'+f.word)
+    with open("debug.txt", 'w') as debugFile:
+        for k,v in ww.nodes.items():
+            debugFile.write(str(k))
+            debugFile.write('\t'+str(len(v.followers))+'\n')
+            for f in v.followers:
+                debugFile.write('\t'+f.word)
+                debugFile.write('\n\t\t'+str(v.followers[f])+'\n')
 
 def traverse(node):
     """
@@ -37,7 +39,7 @@ def traverse(node):
         return
     else:
         print(node.word, end =" ")
-        traverse(random.choice(node.followers))
+        traverse(random.choice(list(node.followers)))
 
 for i in range(0,int(input("How many lines? "))):
     first = WordNode(None)
