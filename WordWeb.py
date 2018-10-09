@@ -16,8 +16,6 @@ class WordNode:
         self.ender = False
         #empty/base nodes should be allowed
         if word != None:
-            if word.istitle():
-                self.starter = True
             #characters that denote the end of a sentence
             if word[-1] in ['!','?','.']:
                 self.ender = True  
@@ -50,5 +48,7 @@ class WordWeb:
             #create a new WordNode
             self.nodes[follow] = WordNode(follow)
         #add it to a previously exising WordNode
-        self.nodes[front].add(self.nodes[follow])     
+        self.nodes[front].add(self.nodes[follow])
+        if front == None:
+            self.nodes[follow].starter = True
 

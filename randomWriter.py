@@ -7,19 +7,19 @@ debug = True
 
 #text input is needed to seed/feed/lead the web
 with open(input("Type file name: "),'r') as file:
-    #remove line endings and split on spaces
-    data = file.read().replace('\n',' ').split(' ')
+    lines = file.readlines()
 
-#create and fill in the WordWeb
 ww = WordWeb()
-last = None
-for d in data:
-    #ignore whitespace
-    if d.replace(' ','') != '':
-        ww.add(last,d)
-        #Note that more logic could be added to create a more complex web
-        #This web will have only one follower on the base node
-        last = d
+for l in lines:
+    #reset last for each line
+    last = None
+    #remove line endings and split on spaces
+    words = l.replace('\n',' ').split(' ')
+    for w in words:
+        #ignore whitespace
+        if w.replace(' ','') != '':
+            ww.add(last, w)
+            last = w
 
 if debug == True:
     with open("debug.txt", 'w') as debugFile:
