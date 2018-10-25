@@ -52,3 +52,25 @@ class WordWeb:
         if front == None:
             self.nodes[follow].starter = True
 
+    def getSentence(self, start_node = None):
+        """
+        Recursively travers web to produce a sentence
+        """
+        import random
+        def _getSentence(node, sentence):
+            if node.ender == True or len(node.followers) <= 0:
+                sentence.append(node.word)
+                return (' '.join(sentence))
+            elif node.word != None:
+                sentence.append(node.word)
+            return _getSentence(random.choice(list(node.followers)),sentence)
+
+        sentence = []
+        if start_node == None:
+            start_node = self.nodes[None]
+        elif isinstance(start_node, WordNode) == False:
+            raise TypeError('Argument to .getSentence must be of type WordNode')
+        return _getSentence(start_node, sentence)
+        
+        
+

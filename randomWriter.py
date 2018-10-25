@@ -30,19 +30,7 @@ if debug == True:
                 debugFile.write('\t'+f.word)
                 debugFile.write('\n\t\t'+str(v.followers[f])+'\n')
 
-def traverse(node):
-    """
-    Randomly traverse the WordWeb
-    """
-    if node.ender == True or len(node.followers) <= 0:
-        print(node.word)
-        return
-    else:
-        print(node.word, end =" ")
-        traverse(random.choice(list(node.followers)))
 
 for i in range(0,int(input("How many lines? "))):
-    first = WordNode(None)
-    while first.starter == False:
-        first = ww.nodes[random.choice(list(ww.nodes))]
-    traverse(first)
+    print(ww.getSentence())
+
