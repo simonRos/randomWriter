@@ -14,11 +14,20 @@ class WordNode:
         self.starter = False
         #can be used to end a sentence
         self.ender = False
+        #used to identify and track quotations
+        self.open_quote = False
+        self.close_quote = False
         #empty/base nodes should be allowed
         if word != None:
             #characters that denote the end of a sentence
             if word[-1] in ['!','?','.']:
-                self.ender = True  
+                self.ender = True
+            #quote detection
+            if word[0] in ['"']:
+                self.open_quote = True
+            #logic phrased this way to handle cases where " comes before punctuation
+            elif '"' in word:
+                self.close_quote = True
         else:
             self.ender = False
             
@@ -54,23 +63,30 @@ class WordWeb:
 
     def getSentence(self, start_node = None):
         """
-        Recursively travers web to produce a sentence
+        Holds metadata for recursive method 
         """
         import random
-        def _getSentence(node, sentence):
+        #metadata
+        sentence = []
+        in_quote = False
+        #recursive method
+        def _getSentence(node):
+            """
+            Recursively traverses web to produce a sentence
+            """
             if node.ender == True or len(node.followers) <= 0:
                 sentence.append(node.word)
-                return (' '.join(sentence))
+                return
             elif node.word != None:
                 sentence.append(node.word)
-            return _getSentence(random.choice(list(node.followers)),sentence)
+            return _getSentence(random.choice(list(node.followers)))
 
-        sentence = []
         if start_node == None:
             start_node = self.nodes[None]
         elif isinstance(start_node, WordNode) == False:
             raise TypeError('Argument to .getSentence must be of type WordNode')
-        return _getSentence(start_node, sentence)
+        _getSentence(start_node)
+        return (' '.join(sentence))
         
         
 
