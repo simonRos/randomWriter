@@ -64,12 +64,16 @@ class WordWeb:
             """
             Recursively traverses web to produce a sentence
             """
-            word = node.word
-            if word != None:
-                sentence.append(word)
+            if node.word != None:
+                sentence.append(node.word)
             if node.ender == True or len(node.followers) <= 0:
                 return
-            return _getSentence(random.choice(list(node.followers)))
+            #weighted random choose next word
+            choices = []
+            for follower in node.followers:
+                for _ in range(node.followers[follower]):
+                    choices.append(follower)
+            return _getSentence(random.choice(choices))
 
         if start_node == None:
             start_node = self.nodes[None]
